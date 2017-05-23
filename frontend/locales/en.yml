@@ -1,7 +1,7 @@
 en:
   plugins:
     yale_accessions:
-      label: Configure Yale Accession IDs
+      label: Configure Accession/Collection IDs
       manage_department_list: Department Codes
       manage_department_list_instructions: Add codes to the list by typing in the input field below. Hit comma, tab, or return to add another code.  Remove a code by clicking the 'x'. Click 'Save' when you are done.
   validation_errors:

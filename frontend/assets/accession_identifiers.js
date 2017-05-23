@@ -1,7 +1,9 @@
 function AccessionIdentifiers(new_record) {
     this.ids = $('div.identifier-fields');
     this.id_0 = $('#accession_id_0_');
+    this.id_1 = $('#accession_id_1_');
     this.id_2 = $('#accession_id_2_');
+    this.id_3 = $('#accession_id_3_');
 
     this.new_record = new_record;
 }
@@ -27,11 +29,11 @@ AccessionIdentifiers.prototype.init = function () {
     if (self.new_record) {
         self.ids.removeClass('required');
         self.disable(self.id_0);
-        self.disable(self.id_2);
+        self.disable(self.id_1);
 
-
-        if (!self.id_2.val().length) {
-            self.id_2.val('XXXX');
+        if (!self.id_1.val().length) {
+          self.id_1.removeAttr('disabled');
+          self.id_1.val('XXXX');
         }
 
         var date = $('#accession_accession_date_').val();
@@ -54,7 +56,6 @@ AccessionIdentifiers.prototype.init = function () {
     }
 
 
-    $('#accession_id_3_').hide();
     self.load_department_codes();
 };
 
@@ -67,7 +68,7 @@ AccessionIdentifiers.prototype.load_department_codes = function () {
         type: "GET",
         success: function(department_list) {
             var codes = department_list.codes;
-            var current_code = $('#accession_id_1_').val();
+            var current_code = $('#accession_id_2_').val();
 
             // Deprecated department codes
             if (current_code.length && $.inArray(current_code, codes) < 0) {
@@ -76,7 +77,7 @@ AccessionIdentifiers.prototype.load_department_codes = function () {
             }
 
             if (codes.length > 1) {
-                var html = "<select id=\"accession_id_1_\" name=\"accession[id_1]\">";
+                var html = "<select id=\"accession_id_2_\" name=\"accession[id_2]\">";
                 $.each(codes, function(i, code) {
                     if (code == current_code) {
                         html += "<option value=\"" + code + "\" selected=\"selected\">" + code + "</option>";
@@ -89,13 +90,15 @@ AccessionIdentifiers.prototype.load_department_codes = function () {
                 });
 
                 html += "</select>"
-                $('#accession_id_1_').replaceWith(html);
+                $('#accession_id_2_').replaceWith(html);
+                $('#accession_id_3_').removeAttr('disabled');
             } else if (codes.length == 1) {
-                $('#accession_id_1_').val(codes[0]);
-                $('#accession_id_1_').removeAttr('disabled');
-                self.disable($('#accession_id_1_'));
+                $('#accession_id_2_').val(codes[0]);
+                $('#accession_id_2_').removeAttr('disabled');
+                self.disable($('#accession_id_2_'));
+                $('#accession_id_3_').removeAttr('disabled');
             } else {
-                $('#accession_id_1_').attr('disabled', 'disabled');
+                $('#accession_id_2_').attr('disabled', 'disabled');
             }
         },
     });

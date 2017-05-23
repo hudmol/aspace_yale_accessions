@@ -1,6 +1,5 @@
 <% if controller.controller_name == 'accessions' %>
-    <%= javascript_include_tag "#{@base_url}/assets/yale_accession_identifiers.js" %>
-    <%= stylesheet_link_tag "#{@base_url}/assets/yale_accessions.css" %>
+    <%= javascript_include_tag "#{@base_url}/assets/accession_identifiers.js" %>
 
     <% if ['edit', 'new', 'create'].include?(controller.action_name) %>
         <script>
@@ -12,6 +11,27 @@
 
 <% end %>
 
+<% if controller.controller_name == 'resources' %>
+    <%= javascript_include_tag "#{@base_url}/assets/resource_identifiers.js" %>
+
+    <% if ['edit', 'new', 'create'].include?(controller.action_name) %>
+        <script>
+        $(function () {
+          $(document).bind("loadedrecordsubforms.aspace", function(event, $subrecord) {  
+            if ( $subrecord.id === 'basic_information' ) {   
+              new ResourceIdentifiers(<%= ['new', 'create'].include?(controller.action_name) %>).init();
+            }   
+          });  
+        });
+        </script>
+    <% end %>
+
+<% end %>
+
+<% if %w( accessions resources ).include? 'accessions' %>
+  <%= stylesheet_link_tag "#{@base_url}/assets/four_identifiers.css" %>
+<% end %>
+  
 <% if controller.controller_name == 'yale_accessions' %>
 	<%= javascript_include_tag "#{@base_url}/assets/tagmanager/tagmanager.js" %>
 	<%= javascript_include_tag "#{@base_url}/assets/department_list.js" %>

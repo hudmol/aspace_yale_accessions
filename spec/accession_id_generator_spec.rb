@@ -1,10 +1,19 @@
 require 'rspec'
-require_relative '../backend/model/mixins/accession_id_generator'
+require 'spec_helper'
+require 'json'
+require_relative '../backend/model/mixins/four_id_generator'
 
-describe 'YaleAccessionIdGenerator' do
+describe 'FourIdGenerator' do
 
   it "understands what a fiscal year is" do
-    YaleAccessionIdGenerator.id_0_generator.call({'accession_date' => '2013-07-01'}).should eq('2014')
-    YaleAccessionIdGenerator.id_0_generator.call({'accession_date' => '2013-06-01'}).should eq('2013')
+    FourIdGenerator.accession_fy_generator.call({'accession_date' => '2013-07-01'}).should eq('2014')
+    FourIdGenerator.accession_fy_generator.call({'accession_date' => '2013-06-01'}).should eq('2013')
   end
+  
+  it "reports an error if id_0 has no value" do
+    opts = {:id_0 => nil}
+    resource = create_resource(opts)
+    JSON.parse(resource.identifier).first.should_not be_nil 
+  end
+
 end
